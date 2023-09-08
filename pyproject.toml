@@ -8,11 +8,18 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 pydantic = "^2.3.0"
+ruff = "^0.0.287"
+mypy = "^1.5.1"
 
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.2"
 
+[tool.ruff]
+# Decrease the maximum line length to 79 characters.
+line-length = 79
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
