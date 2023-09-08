@@ -1,5 +1,5 @@
 import jax.numpy as jnp
-from jax.lax import dynamic_update_slice_in_dim, dynamic_update_slice
+from jax.lax import dynamic_update_slice
 from pydantic import BaseModel
 
 
