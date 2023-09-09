@@ -9,7 +9,12 @@ from utils.constants import Lattice, NodeVelocity
 
 from utils.classes import Store
 
+# logger = logging.getLogger(__name__)
+jax_logger = logging.getLogger("jax")
+jax_logger.setLevel(logging.ERROR)
+
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 def euclidean_norm(to_be_normed: jnp.array, norm_axis=-1) -> jnp.array:

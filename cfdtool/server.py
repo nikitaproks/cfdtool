@@ -30,12 +30,12 @@ def setup_app(store: Store, settings: Settings):
 
     @app.callback(
         [
-            Output("start-simulation-button", "children"),
-            Output("simulation-interval", "max_intervals"),
-            Output("simulation-interval", "n_intervals"),
             Output("cfd-data-store", "data", allow_duplicate=True),
-            Output("reset-simulation-button", "disabled"),
+            Output("simulation-interval", "n_intervals"),
+            Output("simulation-interval", "max_intervals"),
+            Output("start-simulation-button", "children"),
             Output("start-simulation-button", "disabled"),
+            Output("reset-simulation-button", "disabled"),
         ],
         [
             Input("start-simulation-button", "n_clicks"),
@@ -52,41 +52,42 @@ def setup_app(store: Store, settings: Settings):
         if ctx.triggered[0]["prop_id"] == "reset-simulation-button.n_clicks":
             store.set_simulation_running(False)
             store.set_simulation_reset(True)
+            store.empty()
             logger.info("User trigger simulation reset")
-            return "Start Simulation", 0, 0, {"step": 0}, False, False
+            return {"step": 0}, 0, 0, "Start Simulation", False, False
         elif ctx.triggered[0]["prop_id"] == "start-simulation-button.n_clicks":
             if btn_label.lower() == "Start Simulation".lower():
                 store.set_simulation_running(True)
                 logger.info("User trigger simulation start")
                 return (
-                    "Pause Simulation",
-                    -1,
                     dash.no_update,
+                    dash.no_update,
+                    -1,
+                    "Pause Simulation",
                     dash.no_update,
                     True,
-                    dash.no_update,
                 )
             elif btn_label.lower() == "Pause Simulation".lower():
                 store.set_simulation_paused(True)
                 logger.info("User trigger simulation pause")
                 return (
-                    "Continue Simulation",
+                    dash.no_update,
+                    dash.no_update,
                     0,
-                    dash.no_update,
-                    dash.no_update,
+                    "Continue Simulation",
                     False,
-                    dash.no_update,
+                    False,
                 )
-            else:
+            elif btn_label.lower() == "Continue Simulation".lower():
                 store.set_simulation_paused(False)
                 logger.info("User trigger simulation continue")
                 return (
-                    "Pause Simulation",
+                    dash.no_update,
+                    dash.no_update,
                     -1,
-                    dash.no_update,
-                    dash.no_update,
+                    "Pause Simulation",
+                    False,
                     True,
-                    dash.no_update,
                 )
 
     @app.callback(
@@ -130,18 +131,17 @@ def setup_app(store: Store, settings: Settings):
             )
 
         if not store.is_simulation_running():
+            store.empty()
             return (
                 dash.no_update,
-                dash.no_update,
                 0,
-                dash.no_update,
+                0,
+                "Start Simulation",
                 True,
                 False,
             )
 
         if not store.empty():
-            if n_intervals % 100 == 0:
-                logger.info(f"n_intervals: {n_intervals}")
             new_frame = store.get()
 
             fig = go.Figure(data=[go.Heatmap(z=new_frame)])

@@ -76,19 +76,19 @@ class Mesh:
 
 class Store:
     def __init__(self) -> None:
-        self.data: Queue = Queue()
+        self.queue: Queue = Queue()
         self.simulation_running: bool = False
         self.simulation_paused: bool = False
         self.reset: bool = False
 
     def put(self, data):
-        self.data.put(data)
+        self.queue.put(data)
 
     def get(self):
-        return self.data.get()
+        return self.queue.get()
 
     def empty(self):
-        return self.data.empty()
+        return self.queue.empty()
 
     def set_simulation_running(self, simulation_running):
         self.simulation_running = simulation_running

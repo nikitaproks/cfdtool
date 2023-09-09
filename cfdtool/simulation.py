@@ -4,6 +4,7 @@ import logging
 from utils.classes import Circle, Mesh
 from utils.schemas import Node
 from utils.functions import (
+    simulation_management,
     run_simulation,
     calculate_kinematic_viscocity,
     initialize_velocity,
@@ -34,12 +35,21 @@ def simulation(store: Store, settings: Settings):
         inlet_velocity, domain_height, domain_width
     )
 
-    run_simulation(
-        store,
-        15000,
-        velocity_profile,
-        kinematic_viscocity,
-        mesh.get_grid(),
-        n_x_points=domain_height,
-        n_y_ponts=domain_width,
-    )
+    for z in range(0, settings.iterations):
+        continue_simulation: bool = simulation_management(store)
+        if not continue_simulation:
+            break
+        if z % 10000 == 0:
+            logger.info(f"Simulation step: {z}")
+        store.put([[z + i + j for j in range(0, 10)] for i in range(0, 10)])
+        time.sleep(0.05)
+
+    # run_simulation(
+    #     store,
+    #     15000,
+    #     velocity_profile,
+    #     kinematic_viscocity,
+    #     mesh.get_grid(),
+    #     n_x_points=domain_height,
+    #     n_y_ponts=domain_width,
+    # )
