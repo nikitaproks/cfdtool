@@ -2,10 +2,15 @@ import threading
 import logging
 import time
 
+import jax
+
 from utils.schemas import Settings
 from utils.classes import Store
 from server import setup_app
 from simulation import simulation
+
+
+jax.config.update("jax_enable_x64", True)
 
 logging.basicConfig(
     format="%(asctime)s, %(levelname)s: %(message)s",
