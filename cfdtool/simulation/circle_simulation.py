@@ -24,7 +24,7 @@ def simulation() -> None:
     velocity_profile = initialize_velocity(
         inlet_velocity, domain_height, domain_width
     )
-    output = run_simulation(
+    run_simulation(
         15000,
         velocity_profile,
         kinematic_viscocity,

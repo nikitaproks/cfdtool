@@ -1,5 +1,4 @@
 import jax
-from simulation.circle_simulation import simulation
 
 jax.config.update("jax_enable_x64", True)
 
