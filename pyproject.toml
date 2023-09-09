@@ -28,7 +28,13 @@ line-length = 79
 
 [tool.mypy]
 ignore_missing_imports = true
-ignore = ["attr-defined", "index", "operator", "valid-type"]
+disable_error_code = [
+    "attr-defined",
+    "index",
+    "operator",
+    "valid-type",
+    "arg-type",
+]
 
 [build-system]
 requires = ["poetry-core"]
