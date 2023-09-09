@@ -1,8 +1,15 @@
+import time
+import logging
+
 import jax
 import jax.numpy as jnp
 from tqdm import tqdm
 from utils.schemas import SimulationOutput
 from utils.constants import Lattice, NodeVelocity
+
+from utils.classes import Store
+
+logger = logging.getLogger(__name__)
 
 
 def euclidean_norm(to_be_normed: jnp.array, norm_axis=-1) -> jnp.array:
@@ -161,7 +168,20 @@ def lbm_update(
     return discrete_velocities_streamed
 
 
+def simulation_management(store: Store) -> bool:
+    if store.is_simulation_paused():
+        logger.info("Simulation paused")
+        while store.is_simulation_paused():
+            if store.is_simulation_reset():
+                logger.info("Simulation reset. Exiting simulation loop")
+                return False
+            time.sleep(0.5)
+        logger.info("Simulation continued running")
+    return True
+
+
 def run_simulation(
+    store: Store,
     iterations: int,
     velocity_profile,
     kinematic_viscocity,
@@ -175,13 +195,18 @@ def run_simulation(
     """
     The Simulation.
     """
-    simulation_output = []
     # inlet vel profile needs to be set. maybe a function that gives curves
     discrete_velocities_prev = get_equilibrium_discrete_velocities(
         velocity_profile,
         jnp.ones((n_x_points, n_y_ponts)),
     )
     for iteration_index in tqdm(range(iterations)):
+        # Waiting when paused
+        continue_simulation: bool = simulation_management(store)
+        if not continue_simulation:
+            break
+
+        # Update step
         discrete_velocities_next = lbm_update(
             discrete_velocities_prev,
             velocity_profile,
@@ -194,6 +219,7 @@ def run_simulation(
             and visualize
             and iteration_index > skip_first_index
         ):
+            print("Iteration: ", iteration_index)
             density = get_density(discrete_velocities_next)
             macroscopic_velocities = get_macroscopic_velocities(
                 discrete_velocities_next,
@@ -206,13 +232,14 @@ def run_simulation(
             d_v__d_x, _ = jnp.gradient(macroscopic_velocities[..., 1])
             curl = d_u__d_y - d_v__d_x
 
-            simulation_output.append(
-                SimulationOutput(
-                    iteration_index,
-                    macroscopic_velocities[..., 0],
-                    macroscopic_velocities[..., 1],
-                    velocity_mag,
-                    curl,
-                )
-            )
-    return simulation_output
+            output: list[list[float]] = curl.tolist()
+            print("Iteration: ", iteration_index)
+            print(len(output), len(output[0]), output[0][0])
+            store.put(output)
+            # SimulationOutput(
+            #     iteration_index,
+            #     macroscopic_velocities[..., 0],
+            #     macroscopic_velocities[..., 1],
+            #     velocity_mag,
+            #     curl,
+            # )
