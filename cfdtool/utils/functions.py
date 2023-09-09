@@ -4,7 +4,8 @@ import logging
 import jax
 import jax.numpy as jnp
 from tqdm import tqdm
-from utils.schemas import SimulationOutput
+
+# from utils.schemas import SimulationOutput
 from utils.constants import Lattice, NodeVelocity
 
 from utils.classes import Store
@@ -196,7 +197,7 @@ def run_simulation(
     plot_output_steps=100,
     visualize=True,
     skip_first_index=0,
-) -> list[SimulationOutput]:
+) -> None:
     """
     The Simulation.
     """
@@ -230,7 +231,7 @@ def run_simulation(
                 discrete_velocities_next,
                 density,
             )
-            velocity_mag = euclidean_norm(macroscopic_velocities)
+            # velocity_mag = euclidean_norm(macroscopic_velocities)
 
             # calc_curl - du_dx and dv_dy ignored
             _, d_u__d_y = jnp.gradient(macroscopic_velocities[..., 0])
