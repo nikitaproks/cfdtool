@@ -8,7 +8,7 @@ from tqdm import tqdm
 # from utils.schemas import SimulationOutput
 from utils.constants import Lattice, NodeVelocity
 
-from utils.classes import Store
+from classes.store import Store
 
 # logger = logging.getLogger(__name__)
 jax_logger = logging.getLogger("jax")

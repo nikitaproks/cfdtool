@@ -1,7 +1,9 @@
 import time
 import logging
 
-from utils.classes import Circle, Mesh
+from classes.shapes import Circle
+from classes.mesh import Mesh
+from classes.store import Store
 from utils.schemas import Node
 from utils.functions import (
     simulation_management,
@@ -9,8 +11,9 @@ from utils.functions import (
     # calculate_kinematic_viscocity,
     # initialize_velocity,
 )
+from utils.constants import AirfoilEnum
+from classes.shapes import Airfoil
 
-from utils.classes import Store
 from utils.schemas import Settings
 
 logger = logging.getLogger(__name__)
@@ -18,15 +21,17 @@ logger = logging.getLogger(__name__)
 
 def simulation(store: Store, settings: Settings):
     logger.info("Simulation started running")
-    domain_height = 100
-    domain_width = 1000
-    circle_radius = 15
+    domain_height = 20
+    domain_width = 20
+    circle_radius = 5
     # inlet_velocity = 15
 
-    center_node = Node(x=350, y=50)
+    center_node = Node(x=10, y=10)
     circle = Circle(circle_radius)
+    airfoil = Airfoil(AirfoilEnum.NACA_0012, 300)
     mesh = Mesh(domain_width, domain_height)
-    mesh.place(circle, center_node)
+    mesh.place(airfoil, center_node)
+    print(mesh.get_grid())
 
     # kinematic_viscocity = calculate_kinematic_viscocity(
     #     inlet_velocity, circle_radius, reynolds_number=20000

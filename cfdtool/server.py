@@ -6,7 +6,7 @@ from dash.dependencies import Input, Output, State
 import plotly.graph_objs as go
 
 
-from utils.classes import Store
+from classes.store import Store
 from utils.schemas import Settings
 
 logger = logging.getLogger(__name__)

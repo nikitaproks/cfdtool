@@ -5,7 +5,7 @@ import time
 import jax
 
 from utils.schemas import Settings
-from utils.classes import Store
+from classes.store import Store
 from server import setup_app
 from simulation import simulation
 
