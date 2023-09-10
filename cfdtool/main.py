@@ -48,7 +48,7 @@ def run_server(store: Store, settings: Settings):
 
 if __name__ == "__main__":
     store = Store()
-    settings = Settings(width=400, height=10, iterations=1000000)
+    settings = Settings(width=300, height=50, iterations=15000)
 
     t_simulation = threading.Thread(
         target=run_simulation, args=(store, settings)
