@@ -212,7 +212,7 @@ def run_simulation(
             )
             _, d_u__d_y = jnp.gradient(macroscopic_velocities[..., 0])
             d_v__d_x, _ = jnp.gradient(macroscopic_velocities[..., 1])
-            curl = d_u__d_y - d_v__d_x
+            # curl = d_u__d_y - d_v__d_x
 
             output: list[list[float]] = velocity_magnitude.tolist()
             store.put(output)
