@@ -7,7 +7,7 @@ from utils.schemas import Node
 
 class Mesh:
     def __init__(self, width: int, height: int) -> None:
-        self.grid = jnp.zeros((height, width)).astype(jnp.int32)
+        self.grid = jnp.zeros((width, height)).astype(jnp.int32)
 
     def place(self, shape: Shape, center: Node):
         start_x = center.x - shape.grid.shape[0] // 2
