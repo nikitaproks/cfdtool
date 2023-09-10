@@ -1,10 +1,11 @@
 import logging
 
-from utils.classes import Circle, Mesh
+from classes.shapes import Circle
+from classes.mesh import Mesh
+from classes.store import Store
 from utils.schemas import Node
 from utils.functions import run_simulation
 
-from utils.classes import Store
 from utils.schemas import Settings
 
 logger = logging.getLogger(__name__)
@@ -22,6 +23,7 @@ def simulation(store: Store, settings: Settings):
     circle = Circle(circle_radius)
     mesh = Mesh(domain_width, domain_height)
     mesh.place(circle, center_node)
+    print(mesh.get_grid())
 
     run_simulation(
         store,

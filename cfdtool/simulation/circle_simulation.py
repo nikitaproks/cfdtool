@@ -1,4 +1,5 @@
-from utils.classes import Circle, Mesh
+from classes.shapes import Circle
+from classes.mesh import Mesh
 from utils.schemas import Node
 from utils.functions import (
     run_simulation,

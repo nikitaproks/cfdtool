@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import Enum
 import jax.numpy as jnp
 
 
@@ -23,3 +24,8 @@ class NodeVelocity:
     DOWN = jnp.array([4, 7, 8])
     PURE_VERTICAL = jnp.array([0, 2, 4])
     PURE_HORIZONTAL = jnp.array([0, 1, 3])
+
+
+class AirfoilEnum(Enum):
+    NACA_0012 = "0012"
+    NACA_2412 = "2412"
