@@ -74,7 +74,7 @@ def simulation_management(store: Store) -> bool:
                 logger.info("Simulation reset. Exiting simulation loop")
                 return False
             time.sleep(0.5)
-    # logger.info("Simulation continued running")
+        logger.info("Simulation continued running")
     return True
 
 
@@ -188,6 +188,9 @@ def run_simulation(
     )
 
     for iteration_index in tqdm(range(iterations)):
+        continue_simulation = simulation_management(store)
+        if not continue_simulation:
+            break
         discrete_velocities_next = update(discrete_velocities_prev)
 
         discrete_velocities_prev = discrete_velocities_next

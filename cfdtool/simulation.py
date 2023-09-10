@@ -33,5 +33,5 @@ def simulation(store: Store, settings: Settings):
         reynolds_number,
         15000,
         True,
-        100,
+        1000,
     )
