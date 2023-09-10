@@ -11,7 +11,7 @@ def simulation() -> None:
     domain_height = 100
     domain_width = 1000
     circle_radius = 15
-    inlet_velocity = 15
+    inlet_velocity = 0.04
 
     center_node = Node(x=50, y=350)
     circle = Circle(circle_radius)
